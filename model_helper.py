@@ -4,10 +4,6 @@ import tensorflow as tf
 # Keras is TensorFlow's high-level API for deep learning
 from tensorflow import keras
 
-# import ONNX for exporting the keras model
-import onnx
-import tf2onnx
-
 def getFLOPS(model):
     """
         get FLOPS of the model
@@ -45,6 +41,10 @@ def save_model(model, name=None, folder="storedANN"):
     return
 
 def save_model_ONNX(model, name=None, folder="storedANN"):
+    # import ONNX for exporting the keras model
+    import onnx
+    import tf2onnx
+
     # based on https://medium.com/nerd-for-tech/how-to-convert-tensorflow2-model-to-onnx-using-tf2onnx-when-there-is-custom-ops-6e703376ef20
     # 1. Load the Tensorflow Model <- skipped, because we have already TF model loaded
 
