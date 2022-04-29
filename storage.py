@@ -13,10 +13,24 @@ def save_model(model, name=None, folder="storedANN"):
     if name is None:
         name = model.name
 
-    model.save(folder + "/" + name + '.h5')
-    model.save_weights(folder + "/" + name + '_weights.h5')
-    with open(folder + "/" + name + '.json', 'w') as outfile:
-        outfile.write(model.to_json())
+    try:
+        model.save(folder + "/" + name + '.h5')
+    except Exception as e:
+        print(e)
+        print("Trying second approach:")
+        model.save(folder + "/" + name )
+
+    try:
+        model.save_weights(folder + "/" + name + '_weights.h5')
+    except Exception as e:
+        print(e)
+
+    try:
+        with open(folder + "/" + name + '.json', 'w') as outfile:
+            outfile.write(model.to_json())
+    except Exception as e:
+        print(e)
+
     return
 
 def save_model_ONNX(model, name=None, folder="storedANN"):
