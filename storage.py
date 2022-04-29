@@ -28,7 +28,7 @@ def save_model_ONNX(model, name=None, folder="storedANN"):
     # 1. Load the Tensorflow Model <- skipped, because we have already TF model loaded
 
     # 2. Convert the Model to Concrete Function
-    full_model = tf.function(lambda inputs: model(inputs))    
+    full_model = tf.function(lambda inputs: model(inputs))
     full_model = full_model.get_concrete_function([tf.TensorSpec(model_input.shape, model_input.dtype) for model_input in model.inputs])
 
     # 2.1 Persist the Input and Output Parameters
