@@ -33,6 +33,6 @@ def plot_weights(model):
                 transform=ax.transAxes )
 
 
-    plt.savefig(model.name+"_weights.png")
+    plt.savefig("plots/"+model.name+"_weights.png")
     plt.show()
 
