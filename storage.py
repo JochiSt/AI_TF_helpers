@@ -13,6 +13,8 @@ def save_model(model, name=None, folder="storedANN"):
     if name is None:
         name = model.name
 
+    print("Saving '" + name +"'")
+    print("Saving model:")
     try:
         model.save(folder + "/" + name + '.h5')
     except Exception as e:
@@ -20,11 +22,13 @@ def save_model(model, name=None, folder="storedANN"):
         print("Trying second approach:")
         model.save(folder + "/" + name )
 
+    print("Saving model weights:")
     try:
         model.save_weights(folder + "/" + name + '_weights.h5')
     except Exception as e:
         print(e)
 
+    print("Saving model JSON:")
     try:
         with open(folder + "/" + name + '.json', 'w') as outfile:
             outfile.write(model.to_json())
@@ -87,3 +91,19 @@ def save_model_image(model):
             show_shapes=True,             # show input / output shapes
             rankdir='LR'                  # left to right image
         )
+
+def load_quant_model(name, folder="storedANN"):
+    from keras.models import model_from_json
+    from qkeras.utils import _add_supported_quantized_objects
+    co = {}
+    _add_supported_quantized_objects(co)
+
+    # load json and create model
+    with open(folder + "/" + name + '.json', 'r') as json_file:
+        model_json = json_file.read()
+    model = model_from_json(model_json, custom_objects=co)
+    # load weights into new model
+    model.load_weights(folder + "/" + name + '_weights.h5')
+    print("Loaded "+ model.name +" from disk.")
+
+    return model
