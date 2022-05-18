@@ -3,6 +3,8 @@ import tensorflow as tf
 # Keras is TensorFlow's high-level API for deep learning
 from tensorflow import keras
 
+import json
+
 def save_model(model, name=None, folder="storedANN"):
     """
         Save as model.h5, model_weights.h5, and model.json
@@ -31,7 +33,7 @@ def save_model(model, name=None, folder="storedANN"):
     print("Saving model JSON:")
     try:
         with open(folder + "/" + name + '.json', 'w') as outfile:
-            outfile.write(model.to_json())
+            json.dump(json.loads(model.to_json()), outfile, indent=4, sort_keys=False)
     except Exception as e:
         print(e)
 
