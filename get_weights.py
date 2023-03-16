@@ -10,29 +10,30 @@ def get_weights(model):
     #    weights = layer.get_weights() # list of numpy arrays
     return model.get_weights()
 
-def plot_weights(model):
-    flat_weights = np.array( [] )
+def plot_weights( models):
 
-    weights = get_weights(model)
-    for weight in weights:
-        flat_weights = np.append(flat_weights, weight.flatten())
-
-    h, b = np.histogram(flat_weights, bins=100)
     plt.figure( figsize=(7,7) )
-    plt.bar( b[:-1], h, width=b[1]-b[0] )
     plt.semilogy()
 
-    # percentate of zeros in the weights
-    rel_zeros = np.sum(flat_weights==0) / np.size(flat_weights)
-    print("% of zeros = {}".format( rel_zeros*100. ) )
+    for i,model in enumerate(models):
+        flat_weights = np.array( [] )
 
-    ax = plt.gca()
-    plt.text(0.1, 0.9, '%% of zeros = %5.3f'%(rel_zeros*100),
-                horizontalalignment='left',
-                verticalalignment='center',
-                transform=ax.transAxes )
+        weights = get_weights(model)
+        for weight in weights:
+            flat_weights = np.append(flat_weights, weight.flatten())
 
+        # percentate of zeros in the weights
+        rel_zeros = np.sum(flat_weights==0) / np.size(flat_weights)
 
-    plt.savefig("plots/"+model.name+"_weights.png")
+        h, b = np.histogram(flat_weights, bins=100)
+        plt.bar( b[:-1], h, width=b[1]-b[0], label="%s %5.3f %% zeros"%(model.name, rel_zeros*100) )
+
+    model_names = ""
+    for model in models:
+        model_names += "_" + model.name
+
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("plots/weights"+model_names+".png")
     plt.show()
 
