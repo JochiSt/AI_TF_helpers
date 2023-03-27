@@ -25,7 +25,7 @@ def plot_weights( models):
         # percentate of zeros in the weights
         rel_zeros = np.sum(flat_weights==0) / np.size(flat_weights)
 
-        h, b = np.histogram(flat_weights, bins=100)
+        h, b = np.histogram(flat_weights, bins=1000)
         plt.bar( b[:-1], h, width=b[1]-b[0], label="%s %5.3f %% zeros"%(model.name, rel_zeros*100) )
 
     model_names = ""
