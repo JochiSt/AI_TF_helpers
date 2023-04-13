@@ -109,3 +109,38 @@ def load_quant_model(name, folder="storedANN"):
     print("Loaded "+ model.name +" from disk.")
 
     return model
+
+def save_quant_model(model, name=None, folder="storedANN"):
+    """
+        Save as model.h5, model_weights.h5, and model.json
+
+        from https://jiafulow.github.io/blog/2021/02/17/simple-fully-connected-nn-firmware-using-hls4ml/
+    """
+
+
+    if name is None:
+        name = model.name
+
+    print("Saving '" + name +"'")
+    print("Saving model:")
+    try:
+        model.save(folder + "/" + name + '.h5')
+    except Exception as e:
+        print(e)
+        print("Trying second approach:")
+        model.save(folder + "/" + name )
+
+    print("Saving model weights:")
+    try:
+        model_save_quantized_weights(model, filename=folder + "/" + name + '_weights.h5')
+    except Exception as e:
+        print(e)
+
+    print("Saving model JSON:")
+    try:
+        with open(folder + "/" + name + '.json', 'w') as outfile:
+            json.dump(json.loads(model.to_json()), outfile, indent=4, sort_keys=False)
+    except Exception as e:
+        print(e)
+
+    return
